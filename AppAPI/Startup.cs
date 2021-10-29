@@ -9,6 +9,9 @@ using Microsoft.OpenApi.Models;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
 using Data;
+using AuthAPI.Services;
+using Data.Repositories;
+using System.Security.Cryptography;
 
 namespace AppAPI
 {
@@ -29,6 +32,10 @@ namespace AppAPI
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "AppAPI", Version = "v1" });
             });
+            services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IRoleRepository, RoleRepository>();
+            services.AddSingleton<RNGCryptoServiceProvider>();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
@@ -71,6 +78,7 @@ namespace AppAPI
             app.UseRouting();
 
             app.UseAuthorization();
+            app.UseAuthentication();
 
             app.UseEndpoints(endpoints =>
             {

@@ -32,5 +32,12 @@ namespace Data.Repositories
                 .Where(u => u.Id == Id)
                 .SingleOrDefault();
         }
+
+        public User Get(string Email)
+        {
+            return Get()
+                .Where(u => u.Email == Email)
+                .SingleOrDefault();
+        }
     }
 }

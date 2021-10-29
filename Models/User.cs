@@ -14,7 +14,7 @@ namespace Models
 
         public string HashedPassword { get; set; }
 
-        public string Salt { get; set; }
+        public byte[] Salt { get; set; }
 
         public ICollection<Role> Roles { get; set; }
     }

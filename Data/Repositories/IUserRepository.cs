@@ -7,5 +7,7 @@ namespace Data.Repositories
         public void Add(User user);
 
         public User Get(int Id);
+
+        public User Get(string Email);
     }
 }
