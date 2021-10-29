@@ -1,6 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using Models.Species;
+using System.Collections.Generic;
 
-namespace Models
+namespace Models.Auth
 {
     public class User
     {

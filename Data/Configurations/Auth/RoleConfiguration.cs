@@ -1,8 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Models;
+using Models.Auth;
 
-namespace Data.Configurations
+namespace Data.Configurations.Auth
 {
     public class RoleConfiguration : IEntityTypeConfiguration<Role>
     {

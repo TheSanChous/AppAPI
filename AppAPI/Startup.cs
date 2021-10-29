@@ -26,7 +26,6 @@ namespace AppAPI
 
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -49,15 +48,11 @@ namespace AppAPI
                         new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration.GetValue<string>("Auth:SecretKey")))
                     };
                 });
-            services.AddCors(options =>
-            {
-                options.AddPolicy("devCors", options =>
-                {
-                    options.AllowAnyOrigin()
-                    .AllowAnyHeader()
-                    .AllowAnyMethod();
-                });
-            });
+            services.AddCors(
+                options => options.AddPolicy("devCors", opts => opts
+                .AllowAnyOrigin()
+                .AllowAnyHeader()
+                .AllowAnyMethod()));
             services.AddDbContext<DatabaseContext>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("Default"));
@@ -68,9 +63,10 @@ namespace AppAPI
         {
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "AppAPI v1"));
+
+                app.UseCors("devCors");
             }
 
             app.UseHttpsRedirection();
