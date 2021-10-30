@@ -12,6 +12,10 @@ using Data;
 using AuthAPI.Services;
 using Data.Repositories;
 using System.Security.Cryptography;
+using Microsoft.AspNetCore.Authorization;
+using AppAPI.Services.Special;
+using Models.Auth;
+using AppAPI.Services.Autorization;
 
 namespace AppAPI
 {
@@ -27,14 +31,23 @@ namespace AppAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "AppAPI", Version = "v1" });
             });
+
             services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IUserAutorizationService, UserAutorizationService>();
+            services.AddScoped<IUsersGroupsService, UsersGroupsService>();
+
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IRoleRepository, RoleRepository>();
+            services.AddScoped<IGroupRepository, GroupRepository>();
+            services.AddScoped<IUserGroupRepository, UserGroupRepository>();
+
             services.AddSingleton<RNGCryptoServiceProvider>();
+
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
@@ -48,11 +61,21 @@ namespace AppAPI
                         new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration.GetValue<string>("Auth:SecretKey")))
                     };
                 });
+            services.AddAuthorization(options =>
+            {
+                var defaultAuthorizationPolicyBuilder = new AuthorizationPolicyBuilder(
+                    JwtBearerDefaults.AuthenticationScheme);
+                defaultAuthorizationPolicyBuilder =
+                    defaultAuthorizationPolicyBuilder.RequireAuthenticatedUser();
+                options.DefaultPolicy = defaultAuthorizationPolicyBuilder.Build();
+            });
+
             services.AddCors(
                 options => options.AddPolicy("devCors", opts => opts
                 .AllowAnyOrigin()
                 .AllowAnyHeader()
                 .AllowAnyMethod()));
+
             services.AddDbContext<DatabaseContext>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("Default"));

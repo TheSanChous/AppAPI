@@ -2,7 +2,6 @@
 using AuthAPI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using Models;
 using Models.Auth;
 
 namespace AuthAPI.Controllers

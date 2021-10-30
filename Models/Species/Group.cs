@@ -2,10 +2,8 @@
 
 namespace Models.Species
 {
-    public class Group
-    {
-        public int Id { get; set; }
-
+    public class Group : BaseEntity
+    { 
         public string Name { get; set; }
 
         public string Description { get; set; }

@@ -4,9 +4,9 @@ using Models.Species;
 
 namespace Data.Configurations.Species
 {
-    class UsersGroupsConfiguration : IEntityTypeConfiguration<UsersGroups>
+    class UsersGroupsConfiguration : IEntityTypeConfiguration<UserGroup>
     {
-        public void Configure(EntityTypeBuilder<UsersGroups> builder)
+        public void Configure(EntityTypeBuilder<UserGroup> builder)
         {
             builder.HasKey(ug => ug.Id);
 

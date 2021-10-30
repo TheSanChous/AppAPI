@@ -1,9 +1,7 @@
 ﻿namespace Models.Species
 {
-    public class Homework
+    public class Homework : BaseEntity
     {
-        public int Id { get; set; }
-
         public string Title { get; set; }
 
         public string Description { get; set; }

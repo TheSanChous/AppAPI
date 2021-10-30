@@ -2,10 +2,8 @@
 
 namespace Models.Auth
 {
-    public class Role
+    public class Role : BaseEntity
     {
-        public int Id { get; set; }
-
         public string Title { get; set; }
 
         public ICollection<Permission> Permissions { get; set; }

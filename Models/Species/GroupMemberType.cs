@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 
 namespace Models.Species
 {
-    public class GroupMemberType
+    public class GroupMemberType : BaseEntity
     {
-        public int Id { get; set; }
-
         public GroupMemberTypes MemberTypeId { get; set; }
 
         public string Title { get; set; }

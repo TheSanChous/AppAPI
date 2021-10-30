@@ -2,7 +2,7 @@
 
 namespace Models.Auth
 {
-    public class Permission
+    public class Permission : BaseEntity
     {
         public PermissionType PermissionTypeId { get; set; }
 

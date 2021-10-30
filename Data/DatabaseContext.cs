@@ -10,7 +10,7 @@ namespace Data
 
         public DbSet<Role> Roles { get; set; }
 
-        public DbSet<UsersGroups> UsersGroups { get; set; }
+        public DbSet<UserGroup> UsersGroups { get; set; }
 
         public DbSet<Group> Groups { get; set; }
 
