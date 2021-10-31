@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Models.Species.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,6 +36,14 @@ namespace AppAPI.Controllers
             int UserId = _userAutorizationService.GetUserId(User);
             var groups = _groupService.GetUserGroups(UserId);
             return Ok(groups);
+        }
+
+        [HttpPost("create")]
+        [Authorize]
+        public IActionResult CreateGroup([FromBody] GroupCreateDto group)
+        {
+            _groupService.CreateGroup(group, _userAutorizationService.GetUser(User));
+            return Ok();
         }
     }
 }

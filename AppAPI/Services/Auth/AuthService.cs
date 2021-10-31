@@ -40,6 +40,11 @@ namespace AuthAPI.Services
         {
             User user = _userRepository.Get(login.Email);
 
+            if (user is null)
+            {
+                return null;
+            }
+
             string hashedPassword = GetHashedPassword(login.Password, user.Salt);
 
             return hashedPassword.Equals(user.HashedPassword) ? user : null;
@@ -50,7 +55,9 @@ namespace AuthAPI.Services
             var Claims = new List<Claim>
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString(), ClaimValueTypes.Integer),
-                new Claim(ClaimTypes.Email, user.Email)
+                new Claim(ClaimTypes.Email, user.Email),
+                new Claim(ClaimTypes.Name, user.FirstName),
+                new Claim(ClaimTypes.Surname, user.LastName)
             };
 
             var permissions = user.Roles

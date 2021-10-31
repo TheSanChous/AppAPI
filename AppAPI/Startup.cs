@@ -45,6 +45,7 @@ namespace AppAPI
             services.AddScoped<IRoleRepository, RoleRepository>();
             services.AddScoped<IGroupRepository, GroupRepository>();
             services.AddScoped<IUserGroupRepository, UserGroupRepository>();
+            services.AddScoped<IGroupMemberTypeRepository, GroupMemberTypeRepository>();
 
             services.AddSingleton<RNGCryptoServiceProvider>();
 
