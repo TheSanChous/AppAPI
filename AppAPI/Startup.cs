@@ -1,21 +1,21 @@
+using AppAPI.Services.Autorization;
+using AppAPI.Services.Groups;
+using AppAPI.Services.IdentifierGenerator;
+using AuthAPI.Services;
+using Data;
+using Data.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using System.Text;
-using Microsoft.EntityFrameworkCore;
-using Data;
-using AuthAPI.Services;
-using Data.Repositories;
 using System.Security.Cryptography;
-using Microsoft.AspNetCore.Authorization;
-using AppAPI.Services.Special;
-using Models.Auth;
-using AppAPI.Services.Autorization;
+using System.Text;
 
 namespace AppAPI
 {
@@ -40,7 +40,7 @@ namespace AppAPI
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IUserAutorizationService, UserAutorizationService>();
             services.AddScoped<IUsersGroupsService, UsersGroupsService>();
-            services.AddScoped<IIdentifierGenerator, IdentifierGenerator>();
+            services.AddScoped<IIdentifierGeneratorService, IdentifierGeneratorService>();
 
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IRoleRepository, RoleRepository>();

@@ -13,9 +13,9 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AuthAPI.Services
+namespace AppAPI.Services.Auth
 {
-    public class AuthService : IAuthService
+    public class AuthService : ServiceBase, IAuthService
     {
         private readonly IUserRepository _userRepository;
         private readonly IRoleRepository _roleRepository;
@@ -36,18 +36,23 @@ namespace AuthAPI.Services
             _cryptoServiceProvider = cryptoServiceProvider;
         }
 
-        public User Authenticate(Login login)
+        public IServiceActionResult<User> Authenticate(Login login)
         {
             User user = _userRepository.Get(login.Email);
 
             if (user is null)
             {
-                return null;
+                return Error<User>("User not found", null);
             }
 
             string hashedPassword = GetHashedPassword(login.Password, user.Salt);
 
-            return hashedPassword.Equals(user.HashedPassword) ? user : null;
+            if (!hashedPassword.Equals(user.HashedPassword))
+            {
+                return Error<User>("Wrong password", null);
+            }
+
+            return Ok(user);
         }
 
         public List<Claim> CreateClaims(User user)
@@ -100,7 +105,7 @@ namespace AuthAPI.Services
             return _userRepository.Get(registration.Email) is not null;
         }
 
-        public User Register(Registration registration, string asRole)
+        public IServiceActionResult<User> Register(Registration registration, string asRole)
         {
             var userRole = _roleRepository.Get(asRole);
 
@@ -122,7 +127,7 @@ namespace AuthAPI.Services
             _userRepository.Add(user);
             _context.SaveChanges();
 
-            return user;
+            return Ok(user);
         }
 
         private static string GetHashedPassword(string password, byte[] salt)

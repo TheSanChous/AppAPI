@@ -9,8 +9,8 @@ namespace AppAPI.Services.Autorization
 {
     public interface IUserAutorizationService
     {
-        public int GetUserId(ClaimsPrincipal User);
+        public IServiceActionResult<int> GetUserId(ClaimsPrincipal User);
 
-        public User GetUser(ClaimsPrincipal User);
+        public IServiceActionResult<User> GetUser(ClaimsPrincipal User);
     }
 }

@@ -1,4 +1,5 @@
-﻿using Data;
+﻿using AppAPI.Services.IdentifierGenerator;
+using Data;
 using Data.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Models.Auth;
@@ -9,7 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace AppAPI.Services.Special
+namespace AppAPI.Services.Groups
 {
     public class UsersGroupsService : ServiceBase, IUsersGroupsService
     {
@@ -17,14 +18,14 @@ namespace AppAPI.Services.Special
         private readonly IUserRepository _userRepository;
         private readonly IUserGroupRepository _userGroupRepository;
         private readonly IGroupMemberTypeRepository _groupMemberTypeRepository;
-        private readonly IIdentifierGenerator _identifierGenerator;
+        private readonly IIdentifierGeneratorService _identifierGenerator;
         private readonly DatabaseContext _databaseContext;
 
         public UsersGroupsService(IUserRepository userRepository,
             IGroupRepository groupRepository,
             IUserGroupRepository userGroupRepository,
             IGroupMemberTypeRepository groupMemberTypeRepository,
-            IIdentifierGenerator identifierGenerator,
+            IIdentifierGeneratorService identifierGenerator,
             DatabaseContext databaseContext)
         {
             _userRepository = userRepository;

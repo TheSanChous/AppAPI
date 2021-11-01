@@ -1,16 +1,12 @@
-﻿using Models;
-using Models.Auth;
-using System;
+﻿using Models.Auth;
 using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
-using System.Threading.Tasks;
 
-namespace AuthAPI.Services
+namespace AppAPI.Services.Auth
 {
     public interface IAuthService
     {
-        public User Authenticate(Login login);
+        public IServiceActionResult<User> Authenticate(Login login);
 
         public ClaimsPrincipal CreatePrincipal(User user);
 
@@ -18,7 +14,7 @@ namespace AuthAPI.Services
 
         string CreateJwt(IEnumerable<Claim> claims, string signingKey);
 
-        User Register(Registration registration, string asRole);
+        public IServiceActionResult<User> Register(Registration registration, string asRole);
 
         public bool UserExists(Registration registration);
     }

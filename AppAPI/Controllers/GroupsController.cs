@@ -1,5 +1,5 @@
 ﻿using AppAPI.Services.Autorization;
-using AppAPI.Services.Special;
+using AppAPI.Services.Groups;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -34,8 +34,15 @@ namespace AppAPI.Controllers
         [Authorize]
         public IActionResult GetGroups()
         {
-            int UserId = _userAutorizationService.GetUserId(User);
-            var result = _groupService.GetUserGroups(UserId);
+            var getUserIdResult = _userAutorizationService.GetUserId(User);
+            if (!getUserIdResult.IsOk)
+            {
+                return BadRequest(getUserIdResult.Error);
+            }
+
+            var userId = getUserIdResult.Value;
+
+            var result = _groupService.GetUserGroups(userId);
 
             if (result.IsOk)
             {
@@ -49,9 +56,15 @@ namespace AppAPI.Controllers
         [Authorize]
         public IActionResult CreateGroup([FromBody] GroupCreateDto group)
         {
-            var user = _userAutorizationService.GetUser(User);
-            var result = _groupService.CreateGroup(group, user);
+            var getUserResult = _userAutorizationService.GetUser(User);
+            if (!getUserResult.IsOk)
+            {
+                return BadRequest(getUserResult.Error);
+            }
+            var user = getUserResult.Value;
 
+            var result = _groupService.CreateGroup(group, user);
+            
             if (result.IsOk)
             {
                 return Ok();
@@ -64,7 +77,13 @@ namespace AppAPI.Controllers
         [Authorize]
         public IActionResult JoinUserToGroup([FromBody] string groupId)
         {
-            var user = _userAutorizationService.GetUser(User);
+            var getUserResult = _userAutorizationService.GetUser(User);
+            if (!getUserResult.IsOk)
+            {
+                return BadRequest(getUserResult.Error);
+            }
+            var user = getUserResult.Value;
+
             var result = _groupService.JoinUserToGroup(user, groupId);
 
             if (result.IsOk)

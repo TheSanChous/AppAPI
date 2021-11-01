@@ -1,5 +1,5 @@
-﻿using AuthAPI.Attributes;
-using AuthAPI.Services;
+﻿using AppAPI.Attributes;
+using AppAPI.Services.Auth;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Models.Auth;
@@ -25,10 +25,12 @@ namespace AuthAPI.Controllers
         {
             if (_authService.UserExists(registration))
             {
-                return Conflict();
+                return Conflict("User exists");
             }
 
-            var user = _authService.Register(registration, "Admin");
+            var registerResult = _authService.Register(registration, "Admin");
+
+            var user = registerResult.Value;
 
             var claims = _authService.CreateClaims(user);
             var JwtToken = _authService.CreateJwt(claims, _configuration.GetValue<string>("Auth:SecretKey"));
@@ -39,24 +41,18 @@ namespace AuthAPI.Controllers
         [HttpPost("login")]
         public IActionResult Register([FromBody] Login login)
         {
-            var user = _authService.Authenticate(login);
+            var authenticationResult = _authService.Authenticate(login);
             
-            if(user is null)
+            if(!authenticationResult.IsOk)
             {
-                return Unauthorized();
+                return Unauthorized(authenticationResult.Error);
             }
+            var user = authenticationResult.Value;
 
             var claims = _authService.CreateClaims(user);
             var JwtToken = _authService.CreateJwt(claims, _configuration.GetValue<string>("Auth:SecretKey"));
 
             return Ok(new { Token = JwtToken });
-        }
-
-        [HttpGet("extended")]
-        [RequirePermission(PermissionType.AccessExtended)]
-        public IActionResult GetExtended()
-        {
-            return Ok();
         }
     }
 }

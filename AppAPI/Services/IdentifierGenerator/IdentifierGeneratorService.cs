@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace AppAPI.Services.Special
+namespace AppAPI.Services.IdentifierGenerator
 {
-    public class IdentifierGenerator : IIdentifierGenerator
+    public class IdentifierGeneratorService : IIdentifierGeneratorService
     {
         public IServiceActionResult<string> GenerateIdentifier()
         {

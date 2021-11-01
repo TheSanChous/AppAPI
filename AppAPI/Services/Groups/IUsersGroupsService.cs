@@ -3,7 +3,7 @@ using Models.Species;
 using Models.Species.DTO;
 using System.Collections.Generic;
 
-namespace AppAPI.Services.Special
+namespace AppAPI.Services.Groups
 {
     public interface IUsersGroupsService
     {

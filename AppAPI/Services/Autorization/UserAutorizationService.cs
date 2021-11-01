@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace AppAPI.Services.Autorization
 {
-    public class UserAutorizationService : IUserAutorizationService
+    public class UserAutorizationService : ServiceBase, IUserAutorizationService
     {
         private readonly IUserRepository _userRepository;
 
@@ -17,14 +17,21 @@ namespace AppAPI.Services.Autorization
             _userRepository = userRepository;
         }
 
-        public User GetUser(ClaimsPrincipal User)
+        public IServiceActionResult<User> GetUser(ClaimsPrincipal User)
         {
-            return _userRepository.Get(GetUserId(User));
+            var user = _userRepository.Get(GetUserId(User).Value);
+            if(user is null)
+            {
+                return Error<User>("User not found", null);
+            }
+
+            return Ok(user);
         }
 
-        public int GetUserId(ClaimsPrincipal User)
+        public IServiceActionResult<int> GetUserId(ClaimsPrincipal User)
         {
-            return int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var user = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            return Ok(user);
         }
     }
 }

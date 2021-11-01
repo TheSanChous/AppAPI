@@ -5,7 +5,7 @@ using Models.Auth;
 using System;
 using System.Linq;
 
-namespace AuthAPI.Attributes
+namespace AppAPI.Attributes
 {
     [AttributeUsage(AttributeTargets.Method | AttributeTargets.Class)]
     public class RequirePermissionAttribute : TypeFilterAttribute
