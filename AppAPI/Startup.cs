@@ -40,6 +40,7 @@ namespace AppAPI
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IUserAutorizationService, UserAutorizationService>();
             services.AddScoped<IUsersGroupsService, UsersGroupsService>();
+            services.AddScoped<IIdentifierGenerator, IdentifierGenerator>();
 
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IRoleRepository, RoleRepository>();
