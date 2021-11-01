@@ -1,23 +1,23 @@
 ﻿namespace AppAPI.Services
 {
-    public class ServiceBase : IService
+    public class ServiceBase
     {
-        public IServiceActionResult Ok()
+        protected IServiceActionResult Ok()
         {
             return new ServiceActionResult();
         }
 
-        public IServiceActionResult<TResult> Ok<TResult>(TResult value)
+        protected IServiceActionResult<TResult> Ok<TResult>(TResult value)
         {
             return new ServiceActionResult<TResult>(value);
         }
 
-        public IServiceActionResult Error(string error)
+        protected IServiceActionResult Error(string error)
         {
             return new ServiceActionResult(error);
         }
 
-        public IServiceActionResult<TResult> Error<TResult>(string error, TResult value)
+        protected IServiceActionResult<TResult> Error<TResult>(string error, TResult value)
         {
             return new ServiceActionResult<TResult>(value, error);
         }
