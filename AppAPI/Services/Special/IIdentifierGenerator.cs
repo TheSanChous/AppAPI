@@ -2,6 +2,6 @@
 {
     public interface IIdentifierGenerator
     {
-        public string GenerateIdentifier();
+        public IServiceActionResult<string> GenerateIdentifier();
     }
 }

@@ -29,7 +29,14 @@ namespace Data.Repositories
 
         public void Delete(int id)
         {
-            _databaseContext.Groups.Remove(Get(id));
+            _databaseContext.Groups
+                .Remove(Get(id));
+        }
+
+        public Group Get(string id)
+        {
+            return _databaseContext.Groups
+                .FirstOrDefault(g => g.Identifier == id);
         }
 
         public IEnumerable<Group> Get()
@@ -42,8 +49,7 @@ namespace Data.Repositories
         public Group Get(int id)
         {
             return Get()
-                .Where(g => g.Id == id)
-                .SingleOrDefault();
+                .SingleOrDefault(g => g.Id == id);
         }
 
         public void Update(Group entity)

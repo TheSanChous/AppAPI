@@ -35,24 +35,44 @@ namespace AppAPI.Controllers
         public IActionResult GetGroups()
         {
             int UserId = _userAutorizationService.GetUserId(User);
-            var groups = _groupService.GetUserGroups(UserId);
-            return Ok(groups);
+            var result = _groupService.GetUserGroups(UserId);
+
+            if (result.IsOk)
+            {
+                return Ok(result.Value);
+            }
+
+            return BadRequest(result.Error);
         }
 
         [HttpPost("create")]
         [Authorize]
         public IActionResult CreateGroup([FromBody] GroupCreateDto group)
         {
-            _groupService.CreateGroup(group, _userAutorizationService.GetUser(User));
-            return Ok();
+            var user = _userAutorizationService.GetUser(User);
+            var result = _groupService.CreateGroup(group, user);
+
+            if (result.IsOk)
+            {
+                return Ok();
+            }
+
+            return BadRequest(result.Error);
         }
 
-        [HttpPost("join/{groupId:int}")]
-        public IActionResult JoinUserToGroup(int groupId)
+        [HttpPost("join")]
+        [Authorize]
+        public IActionResult JoinUserToGroup([FromBody] string groupId)
         {
-            User user = _userAutorizationService.GetUser(User);
-            _groupService.JoinUserToGroup(user, groupId);
-            return Ok();
+            var user = _userAutorizationService.GetUser(User);
+            var result = _groupService.JoinUserToGroup(user, groupId);
+
+            if (result.IsOk)
+            {
+                return Ok();
+            }
+
+            return BadRequest(result.Error);
         }
     }
 }

@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace AppAPI.Services.Special
 {
-    public class UsersGroupsService : IUsersGroupsService
+    public class UsersGroupsService : ServiceBase, IUsersGroupsService
     {
         private readonly IGroupRepository _groupRepository;
         private readonly IUserRepository _userRepository;
@@ -35,23 +35,35 @@ namespace AppAPI.Services.Special
             _databaseContext = databaseContext;
         }
 
-        public IEnumerable<Group> GetUserGroups(int UserId)
+        public IServiceActionResult<IEnumerable<Group>> GetUserGroups(int UserId)
         {
-            User user = _userRepository.Get(UserId);
-            return _userGroupRepository.GetGroups(user);
+            var user = _userRepository.Get(UserId);
+            if(user is null)
+            {
+                return Error<IEnumerable<Group>>("User not found", null);
+            }
+
+            var groups = _userGroupRepository.GetGroups(user);
+            return Ok(groups);
         }
 
-        public IEnumerable<User> GetGroupUsers(int GroupId)
+        public IServiceActionResult<IEnumerable<User>> GetGroupUsers(int GroupId)
         {
             var group = _groupRepository.Get(GroupId);
-            return _userGroupRepository.GetUsers(group);
+            if (group is null)
+            {
+                return Error<IEnumerable<User>>("Group not found", null);
+            }
+
+            var users = _userGroupRepository.GetUsers(group);
+            return Ok(users);
         }
 
-        public void CreateGroup(GroupCreateDto group, User creator)
+        public IServiceActionResult<Group> CreateGroup(GroupCreateDto group, User creator)
         {
             var newGroup = new Group
             {
-                Identifier = _identifierGenerator.GenerateIdentifier(),
+                Identifier = _identifierGenerator.GenerateIdentifier().Value,
                 Name = group.Name,
                 Description = group.Description
             };
@@ -67,11 +79,18 @@ namespace AppAPI.Services.Special
             };
             _userGroupRepository.Add(userGroup);
             _databaseContext.SaveChanges();
+
+            return Ok(newGroup);
         }
 
-        public void JoinUserToGroup(User user, int groupId, GroupMemberTypes type = GroupMemberTypes.Student)
+        public IServiceActionResult JoinUserToGroup(User user, string groupId, GroupMemberTypes type = GroupMemberTypes.Student)
         {
             var group = _groupRepository.Get(groupId);
+
+            if(group is null)
+            {
+                return Error("Group not found");
+            }
 
             var userGroup = new UserGroup
             {
@@ -82,6 +101,8 @@ namespace AppAPI.Services.Special
 
             _userGroupRepository.Add(userGroup);
             _databaseContext.SaveChanges();
+
+            return Ok();
         }
     }
 }
