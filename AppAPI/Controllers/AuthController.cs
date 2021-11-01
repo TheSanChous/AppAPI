@@ -39,7 +39,7 @@ namespace AuthAPI.Controllers
         }
 
         [HttpPost("login")]
-        public IActionResult Register([FromBody] Login login)
+        public IActionResult Login([FromBody] Login login)
         {
             var authenticationResult = _authService.Authenticate(login);
             

@@ -1,7 +1,7 @@
+using AppAPI.Services.Auth;
 using AppAPI.Services.Autorization;
 using AppAPI.Services.Groups;
 using AppAPI.Services.IdentifierGenerator;
-using AuthAPI.Services;
 using Data;
 using Data.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
