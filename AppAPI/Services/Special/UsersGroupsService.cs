@@ -17,18 +17,21 @@ namespace AppAPI.Services.Special
         private readonly IUserRepository _userRepository;
         private readonly IUserGroupRepository _userGroupRepository;
         private readonly IGroupMemberTypeRepository _groupMemberTypeRepository;
+        private readonly IIdentifierGenerator _identifierGenerator;
         private readonly DatabaseContext _databaseContext;
 
         public UsersGroupsService(IUserRepository userRepository,
             IGroupRepository groupRepository,
             IUserGroupRepository userGroupRepository,
             IGroupMemberTypeRepository groupMemberTypeRepository,
+            IIdentifierGenerator identifierGenerator,
             DatabaseContext databaseContext)
         {
             _userRepository = userRepository;
             _groupRepository = groupRepository;
             _userGroupRepository = userGroupRepository;
             _groupMemberTypeRepository = groupMemberTypeRepository;
+            _identifierGenerator = identifierGenerator;
             _databaseContext = databaseContext;
         }
 
@@ -40,14 +43,15 @@ namespace AppAPI.Services.Special
 
         public IEnumerable<User> GetGroupUsers(int GroupId)
         {
-            Group group = _groupRepository.Get(GroupId);
+            var group = _groupRepository.Get(GroupId);
             return _userGroupRepository.GetUsers(group);
         }
 
         public void CreateGroup(GroupCreateDto group, User creator)
         {
-            Group newGroup = new Group
+            var newGroup = new Group
             {
+                Identifier = _identifierGenerator.GenerateIdentifier(),
                 Name = group.Name,
                 Description = group.Description
             };
@@ -55,12 +59,27 @@ namespace AppAPI.Services.Special
             _groupRepository.Add(newGroup);
             _databaseContext.SaveChanges();
 
-            UserGroup userGroup = new UserGroup
+            var userGroup = new UserGroup
             {
                 Group = newGroup,
                 User = creator,
                 MemberType = _groupMemberTypeRepository.GetGroupMemberType(GroupMemberTypes.Administrator)
             };
+            _userGroupRepository.Add(userGroup);
+            _databaseContext.SaveChanges();
+        }
+
+        public void JoinUserToGroup(User user, int groupId, GroupMemberTypes type = GroupMemberTypes.Student)
+        {
+            var group = _groupRepository.Get(groupId);
+
+            var userGroup = new UserGroup
+            {
+                Group = group,
+                User = user,
+                MemberType = _groupMemberTypeRepository.GetGroupMemberType(type)
+            };
+
             _userGroupRepository.Add(userGroup);
             _databaseContext.SaveChanges();
         }

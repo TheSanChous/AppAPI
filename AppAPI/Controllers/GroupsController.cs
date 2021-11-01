@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Models.Auth;
 using Models.Species.DTO;
 using System;
 using System.Collections.Generic;
@@ -43,6 +44,14 @@ namespace AppAPI.Controllers
         public IActionResult CreateGroup([FromBody] GroupCreateDto group)
         {
             _groupService.CreateGroup(group, _userAutorizationService.GetUser(User));
+            return Ok();
+        }
+
+        [HttpPost("join/{groupId:int}")]
+        public IActionResult JoinUserToGroup(int groupId)
+        {
+            User user = _userAutorizationService.GetUser(User);
+            _groupService.JoinUserToGroup(user, groupId);
             return Ok();
         }
     }

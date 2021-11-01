@@ -10,6 +10,13 @@ namespace Data.Configurations.Species
         {
             builder.HasKey(g => g.Id);
 
+            builder.Property(g => g.Identifier)
+                .HasMaxLength(100)
+                .IsRequired();
+
+            builder.HasIndex(g => g.Identifier)
+                .IsUnique();
+
             builder.Property(g => g.Name)
                 .IsRequired()
                 .HasMaxLength(128);

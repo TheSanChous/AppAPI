@@ -10,5 +10,7 @@ namespace AppAPI.Services.Special
         public IEnumerable<Group> GetUserGroups(int UserId);
 
         public void CreateGroup(GroupCreateDto group, User creator);
+
+        public void JoinUserToGroup(User user, int groupId, GroupMemberTypes type = GroupMemberTypes.Student);
     }
 }
