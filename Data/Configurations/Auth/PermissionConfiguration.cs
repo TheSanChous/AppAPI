@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Models.Auth;
+using Permission = Data.Models.Auth.Permission;
 
 namespace Data.Configurations.Auth
 {

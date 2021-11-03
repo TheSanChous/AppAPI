@@ -4,9 +4,9 @@ using Models.Species;
 
 namespace Data.Configurations.Species
 {
-    class SubjectConfiguration : IEntityTypeConfiguration<Subject>
+    class SubjectConfiguration : IEntityTypeConfiguration<Models.Species.Subject>
     {
-        public void Configure(EntityTypeBuilder<Subject> builder)
+        public void Configure(EntityTypeBuilder<Models.Species.Subject> builder)
         {
             builder.HasKey(s => s.Id);
 

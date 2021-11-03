@@ -10,6 +10,5 @@
     public interface IServiceActionResult<TResult> : IServiceActionResult
     {
         public TResult Value { get; set; }
-
     }
 }

@@ -1,6 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Models.Auth;
 using Models.Species;
+using Group = Data.Models.Species.Group;
+using GroupMemberType = Data.Models.Species.GroupMemberType;
+using Homework = Data.Models.Species.Homework;
+using Subject = Data.Models.Species.Subject;
+using UserGroup = Data.Models.Species.UserGroup;
 
 namespace Data
 {

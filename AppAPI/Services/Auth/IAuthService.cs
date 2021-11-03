@@ -14,8 +14,8 @@ namespace AppAPI.Services.Auth
 
         string CreateJwt(IEnumerable<Claim> claims, string signingKey);
 
-        public IServiceActionResult<User> Register(Registration registration, string asRole);
+        public IServiceActionResult<User> Register(RegistrationModel registration, string asRole);
 
-        public bool UserExists(Registration registration);
+        public bool UserExists(RegistrationModel registration);
     }
 }

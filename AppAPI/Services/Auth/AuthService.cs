@@ -100,12 +100,12 @@ namespace AppAPI.Services.Auth
             return new ClaimsPrincipal(identity);
         }
 
-        public bool UserExists(Registration registration)
+        public bool UserExists(RegistrationModel registration)
         {
             return _userRepository.Get(registration.Email) is not null;
         }
 
-        public IServiceActionResult<User> Register(Registration registration, string asRole)
+        public IServiceActionResult<User> Register(RegistrationModel registration, string asRole)
         {
             var userRole = _roleRepository.Get(asRole);
 

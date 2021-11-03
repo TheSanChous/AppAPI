@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Models.Species;
+using UserGroup = Data.Models.Species.UserGroup;
 
 namespace Data.Configurations.Species
 {

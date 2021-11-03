@@ -21,7 +21,7 @@ namespace AuthAPI.Controllers
         }
 
         [HttpPost("register")]
-        public IActionResult Register([FromBody] Registration registration)
+        public IActionResult Register([FromBody] RegistrationModel registration)
         {
             if (_authService.UserExists(registration))
             {
