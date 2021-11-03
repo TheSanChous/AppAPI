@@ -24,7 +24,7 @@ namespace Data.Configurations.Species
                 .HasMaxLength(2048);
 
             builder.HasOne(h => h.Subject)
-                .WithMany(s => s.Homeworks);
+                .WithMany(s => s.HomeworkCollection);
         }
     }
 }

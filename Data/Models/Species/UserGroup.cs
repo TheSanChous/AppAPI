@@ -1,5 +1,4 @@
-﻿using Models;
-using Models.Auth;
+﻿using Data.Models.Auth;
 
 namespace Data.Models.Species
 {

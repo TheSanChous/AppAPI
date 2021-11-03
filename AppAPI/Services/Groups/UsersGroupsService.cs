@@ -1,9 +1,9 @@
-﻿using AppAPI.Services.IdentifierGenerator;
+﻿using AppAPI.DTO;
+using AppAPI.Services.IdentifierGenerator;
 using Data;
+using Data.Models.Auth;
+using Data.Models.Species;
 using Data.Repositories;
-using Models.Auth;
-using Models.Species;
-using Models.Species.DTO;
 using System.Collections.Generic;
 
 namespace AppAPI.Services.Groups
@@ -33,9 +33,9 @@ namespace AppAPI.Services.Groups
             _databaseContext = databaseContext;
         }
 
-        public IServiceActionResult<IEnumerable<Group>> GetUserGroups(int UserId)
+        public IServiceActionResult<IEnumerable<Group>> GetUserGroups(int userId)
         {
-            var user = _userRepository.Get(UserId);
+            var user = _userRepository.Get(userId);
             if(user is null)
             {
                 return Error<IEnumerable<Group>>("User not found", null);
@@ -57,7 +57,7 @@ namespace AppAPI.Services.Groups
             return Ok(users);
         }
 
-        public IServiceActionResult<Group> CreateGroup(GroupCreateDto group, User administrator)
+        public IServiceActionResult<Group> CreateGroup(GroupCreateModel group, User administrator)
         {
             var newGroup = new Group
             {

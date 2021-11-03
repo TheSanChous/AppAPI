@@ -1,9 +1,9 @@
-﻿using Models.Auth;
+﻿using Data.Models.Auth;
 
 namespace Data.Repositories
 {
     public interface IUserRepository : IEntityRepository<User>
     {
-        public User Get(string Email);
+        public User Get(string email);
     }
 }

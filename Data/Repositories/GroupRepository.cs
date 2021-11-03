@@ -44,7 +44,7 @@ namespace Data.Repositories
         {
             return _databaseContext.Groups
                 .Include(g => g.Subjects)
-                .ThenInclude(s => s.Homeworks);
+                .ThenInclude(s => s.HomeworkCollection);
         }
 
         public Group Get(int id)

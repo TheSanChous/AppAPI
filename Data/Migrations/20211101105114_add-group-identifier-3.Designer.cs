@@ -165,7 +165,7 @@ namespace Data.Migrations
 
                     b.HasIndex("SubjectId");
 
-                    b.ToTable("Homeworks");
+                    b.ToTable("HomeworkCollection");
                 });
 
             modelBuilder.Entity("Models.Species.Subject", b =>
@@ -254,7 +254,7 @@ namespace Data.Migrations
             modelBuilder.Entity("Models.Species.Homework", b =>
                 {
                     b.HasOne("Models.Species.Subject", "Subject")
-                        .WithMany("Homeworks")
+                        .WithMany("HomeworkCollection")
                         .HasForeignKey("SubjectId");
 
                     b.Navigation("Subject");
@@ -327,7 +327,7 @@ namespace Data.Migrations
 
             modelBuilder.Entity("Models.Species.Subject", b =>
                 {
-                    b.Navigation("Homeworks");
+                    b.Navigation("HomeworkCollection");
                 });
 #pragma warning restore 612, 618
         }

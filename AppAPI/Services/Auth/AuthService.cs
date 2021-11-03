@@ -12,6 +12,8 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using AppAPI.DTO.Auth;
+using Data.Models.Auth;
 
 namespace AppAPI.Services.Auth
 {
@@ -36,7 +38,7 @@ namespace AppAPI.Services.Auth
             _cryptoServiceProvider = cryptoServiceProvider;
         }
 
-        public IServiceActionResult<User> Authenticate(Login login)
+        public IServiceActionResult<User> Authenticate(LoginModel login)
         {
             User user = _userRepository.Get(login.Email);
 

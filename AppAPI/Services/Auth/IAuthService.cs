@@ -1,12 +1,14 @@
 ﻿using Models.Auth;
 using System.Collections.Generic;
 using System.Security.Claims;
+using AppAPI.DTO.Auth;
+using Data.Models.Auth;
 
 namespace AppAPI.Services.Auth
 {
     public interface IAuthService
     {
-        public IServiceActionResult<User> Authenticate(Login login);
+        public IServiceActionResult<User> Authenticate(LoginModel login);
 
         public ClaimsPrincipal CreatePrincipal(User user);
 

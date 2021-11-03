@@ -1,6 +1,6 @@
-﻿using Models.Auth;
-using Models.Species;
-using Models.Species.DTO;
+﻿using AppAPI.DTO;
+using Data.Models.Auth;
+using Data.Models.Species;
 using System.Collections.Generic;
 
 namespace AppAPI.Services.Groups
@@ -9,7 +9,7 @@ namespace AppAPI.Services.Groups
     {
         public IServiceActionResult<IEnumerable<Group>> GetUserGroups(int userId);
 
-        public IServiceActionResult<Group> CreateGroup(GroupCreateDto group, User creator);
+        public IServiceActionResult<Group> CreateGroup(GroupCreateModel group, User creator);
 
         public IServiceActionResult JoinUserToGroup(User user, string groupId, GroupMemberTypes type = GroupMemberTypes.Student);
     }

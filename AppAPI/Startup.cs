@@ -16,6 +16,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Security.Cryptography;
 using System.Text;
+using AppAPI.Services.Authorization;
 
 namespace AppAPI
 {
@@ -38,7 +39,7 @@ namespace AppAPI
             });
 
             services.AddScoped<IAuthService, AuthService>();
-            services.AddScoped<IUserAutorizationService, UserAutorizationService>();
+            services.AddScoped<IUserAuthorizationService, UserAuthorizationService>();
             services.AddScoped<IUsersGroupsService, UsersGroupsService>();
             services.AddScoped<IIdentifierGeneratorService, IdentifierGeneratorService>();
 

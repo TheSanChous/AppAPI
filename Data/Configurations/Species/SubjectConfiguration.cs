@@ -20,7 +20,7 @@ namespace Data.Configurations.Species
             builder.HasOne(s => s.Group)
                 .WithMany(g => g.Subjects);
 
-            builder.HasMany(s => s.Homeworks)
+            builder.HasMany(s => s.HomeworkCollection)
                 .WithOne(h => h.Subject);
         }
     }

@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Models;
 
 namespace Data.Models.Species
 {
@@ -11,6 +10,6 @@ namespace Data.Models.Species
 
         public Group Group { get; set; }
 
-        public ICollection<Homework> Homeworks { get; set; }
+        public ICollection<Homework> HomeworkCollection { get; set; }
     }
 }

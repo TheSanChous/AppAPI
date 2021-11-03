@@ -89,7 +89,7 @@ namespace Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Homeworks",
+                name: "HomeworkCollection",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -111,7 +111,7 @@ namespace Data.Migrations
 
             migrationBuilder.CreateIndex(
                 name: "IX_Homeworks_SubjectId",
-                table: "Homeworks",
+                table: "HomeworkCollection",
                 column: "SubjectId");
 
             migrationBuilder.CreateIndex(
@@ -138,7 +138,7 @@ namespace Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Homeworks");
+                name: "HomeworkCollection");
 
             migrationBuilder.DropTable(
                 name: "UsersGroups");

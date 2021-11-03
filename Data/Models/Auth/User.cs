@@ -1,7 +1,7 @@
-﻿using Models.Species;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Models.Auth;
 
-namespace Models.Auth
+namespace Data.Models.Auth
 {
     public class User : BaseEntity
     {

@@ -1,4 +1,4 @@
-﻿using Models;
+﻿using Data.Models;
 using System.Collections.Generic;
 
 namespace Data.Repositories
