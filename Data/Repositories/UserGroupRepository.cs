@@ -1,13 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Models.Auth;
-using Models.Species;
-using System;
+﻿using Data.Models.Species;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Group = Data.Models.Species.Group;
-using UserGroup = Data.Models.Species.UserGroup;
+using Data.Models.Auth;
 
 namespace Data.Repositories
 {
@@ -46,8 +41,7 @@ namespace Data.Repositories
         public UserGroup Get(int id)
         {
             return Get()
-                .Where(ug => ug.Id == id)
-                .SingleOrDefault();
+                .SingleOrDefault(ug => ug.Id == id);
         }
 
         public IEnumerable<Group> GetGroups(User user)

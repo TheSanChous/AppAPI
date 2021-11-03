@@ -1,5 +1,5 @@
 using AppAPI.Services.Auth;
-using AppAPI.Services.Autorization;
+using AppAPI.Services.Authorization;
 using AppAPI.Services.Groups;
 using AppAPI.Services.IdentifierGenerator;
 using Data;
@@ -16,7 +16,6 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Security.Cryptography;
 using System.Text;
-using AppAPI.Services.Authorization;
 
 namespace AppAPI
 {

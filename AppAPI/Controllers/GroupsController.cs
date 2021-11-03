@@ -1,19 +1,9 @@
-﻿using AppAPI.Services.Autorization;
+﻿using AppAPI.DTO;
+using AppAPI.Services.Authorization;
 using AppAPI.Services.Groups;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using Models.Auth;
-using AppAPI.DTO.Auth;
-using AppAPI.DTO;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using AppAPI.Services.Authorization;
 
 namespace AppAPI.Controllers
 {

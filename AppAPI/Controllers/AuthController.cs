@@ -1,10 +1,9 @@
-﻿using AppAPI.Attributes;
+﻿using AppAPI.DTO.Auth;
 using AppAPI.Services.Auth;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using Models.Auth;
 
-namespace AuthAPI.Controllers
+namespace AppAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -39,7 +38,7 @@ namespace AuthAPI.Controllers
         }
 
         [HttpPost("login")]
-        public IActionResult Login([FromBody] Login login)
+        public IActionResult Login([FromBody] LoginModel login)
         {
             var authenticationResult = _authService.Authenticate(login);
             

@@ -1,9 +1,10 @@
-﻿using Data;
+﻿using AppAPI.DTO.Auth;
+using AppAPI.Models;
+using Data;
+using Data.Models.Auth;
 using Data.Repositories;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.IdentityModel.Tokens;
-using Models;
-using Models.Auth;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -11,9 +12,6 @@ using System.Linq;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
-using AppAPI.DTO.Auth;
-using Data.Models.Auth;
 
 namespace AppAPI.Services.Auth
 {
@@ -59,12 +57,12 @@ namespace AppAPI.Services.Auth
 
         public List<Claim> CreateClaims(User user)
         {
-            var Claims = new List<Claim>
+            var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString(), ClaimValueTypes.Integer),
-                new Claim(ClaimTypes.Email, user.Email),
-                new Claim(ClaimTypes.Name, user.FirstName),
-                new Claim(ClaimTypes.Surname, user.LastName)
+                new (ClaimTypes.NameIdentifier, user.Id.ToString(), ClaimValueTypes.Integer),
+                new (ClaimTypes.Email, user.Email),
+                new (ClaimTypes.Name, user.FirstName),
+                new (ClaimTypes.Surname, user.LastName)
             };
 
             var permissions = user.Roles
@@ -72,7 +70,7 @@ namespace AppAPI.Services.Auth
                 .Distinct()
                 .Select(p => new Claim("permission", p.Title));
 
-            return Claims.Concat(permissions).ToList();
+            return claims.Concat(permissions).ToList();
         }
 
         public string CreateJwt(IEnumerable<Claim> claims, string signingKey)

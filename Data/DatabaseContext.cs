@@ -1,15 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Models.Auth;
-using Models.Species;
-using Group = Data.Models.Species.Group;
-using GroupMemberType = Data.Models.Species.GroupMemberType;
-using Homework = Data.Models.Species.Homework;
-using Subject = Data.Models.Species.Subject;
-using UserGroup = Data.Models.Species.UserGroup;
+﻿using AppAPI.Models;
+using Data.Models.Auth;
+using Data.Models.Species;
+using Microsoft.EntityFrameworkCore;
 
 namespace Data
 {
-    public class DatabaseContext : DbContext
+    public sealed class DatabaseContext : DbContext
     {
         public DbSet<User> Users { get; set; }
 
@@ -21,7 +17,7 @@ namespace Data
 
         public DbSet<Subject> Subjects { get; set; }
 
-        public DbSet<Homework> Homeworks { get; set; }
+        public DbSet<Homework> Homework { get; set; }
 
         public DbSet<GroupMemberType> GroupMemberTypes { get; set; }
 

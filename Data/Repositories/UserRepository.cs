@@ -1,5 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Models.Auth;
+﻿using Data.Models.Auth;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -39,15 +39,13 @@ namespace Data.Repositories
         public User Get(int Id)
         {
             return Get()
-                .Where(u => u.Id == Id)
-                .SingleOrDefault();
+                .SingleOrDefault(u => u.Id == Id);
         }
 
         public User Get(string Email)
         {
             return Get()
-                .Where(u => u.Email == Email)
-                .SingleOrDefault();
+                .SingleOrDefault(u => u.Email == Email);
         }
 
         public void Update(User entity)

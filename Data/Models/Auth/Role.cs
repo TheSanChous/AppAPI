@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
+using Data.Models;
+using Data.Models.Auth;
 
-namespace Models.Auth
+namespace AppAPI.Models
 {
     public class Role : BaseEntity
     {

@@ -1,5 +1,4 @@
-﻿using Models.Species;
-using Group = Data.Models.Species.Group;
+﻿using Data.Models.Species;
 
 namespace Data.Repositories
 {

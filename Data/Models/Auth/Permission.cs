@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
-using Models;
+﻿using AppAPI.Models;
 using Models.Auth;
+using System.Collections.Generic;
 
 namespace Data.Models.Auth
 {

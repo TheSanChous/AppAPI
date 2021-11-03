@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Models.Species;
 using GroupMemberType = Data.Models.Species.GroupMemberType;
 
 namespace Data.Configurations.Species

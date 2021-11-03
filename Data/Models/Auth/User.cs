@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using Models.Auth;
+﻿using AppAPI.Models;
+using System.Collections.Generic;
 
 namespace Data.Models.Auth
 {

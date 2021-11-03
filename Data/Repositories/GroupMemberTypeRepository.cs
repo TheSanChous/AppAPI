@@ -1,12 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Models.Species;
-using System;
-using System.Collections.Generic;
+﻿using Data.Models.Species;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using GroupMemberType = Data.Models.Species.GroupMemberType;
-using GroupMemberTypes = Data.Models.Species.GroupMemberTypes;
 
 namespace Data.Repositories
 {
@@ -22,8 +15,7 @@ namespace Data.Repositories
         public GroupMemberType GetGroupMemberType(GroupMemberTypes groupMemberType)
         {
             return _databaseContext.GroupMemberTypes
-                .Where(gmt => gmt.MemberTypeId == groupMemberType)
-                .SingleOrDefault();
+                .SingleOrDefault(gmt => gmt.MemberTypeId == groupMemberType);
         }
     }
 }

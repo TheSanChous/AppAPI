@@ -1,4 +1,4 @@
-﻿using Models.Auth;
+﻿using AppAPI.Models;
 
 namespace AppAPI.DTO.Auth
 {
