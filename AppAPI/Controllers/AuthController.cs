@@ -1,5 +1,9 @@
-﻿using AppAPI.DTO.Auth;
+﻿using System;
+using AppAPI.DTO.Auth;
 using AppAPI.Services.Auth;
+using AppAPI.Services.Auth.Exceptions;
+using Data.Models.Auth;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 
@@ -20,38 +24,79 @@ namespace AppAPI.Controllers
         }
 
         [HttpPost("register")]
-        public IActionResult Register([FromBody] RegistrationModel registration)
+        public IActionResult Register([FromBody] RegistrationModel registrationModel)
         {
-            if (_authService.UserExists(registration))
+            try
             {
-                return Conflict("User exists");
+                User user = _authService.Register(registrationModel);
+
+                string token = _authService.GetJwtToken(user, _configuration.GetValue<string>("Auth:SecretKey"));
+
+                var response = new
+                {
+                    Token = token
+                };
+
+                return Ok(response);
             }
-
-            var registerResult = _authService.Register(registration, "Admin");
-
-            var user = registerResult.Value;
-
-            var claims = _authService.CreateClaims(user);
-            var JwtToken = _authService.CreateJwt(claims, _configuration.GetValue<string>("Auth:SecretKey"));
-
-            return Ok(new { Token = JwtToken });
+            catch (UserExistException)
+            {
+                var response = new
+                {
+                    message = "Email is already exist"
+                };
+                return Unauthorized(response);
+            }
+            catch (Exception exception)
+            {
+                var response = new
+                {
+                    message = exception.Message
+                };
+                return StatusCode(StatusCodes.Status500InternalServerError, response);
+            }
         }
 
         [HttpPost("login")]
-        public IActionResult Login([FromBody] LoginModel login)
+        public IActionResult Login([FromBody] LoginModel loginModel)
         {
-            var authenticationResult = _authService.Authenticate(login);
-            
-            if(!authenticationResult.IsOk)
+            try
             {
-                return Unauthorized(authenticationResult.Error);
+                User user = _authService.Authenticate(loginModel);
+
+                string token = _authService.GetJwtToken(user, _configuration.GetValue<string>("Auth:SecretKey"));
+
+                var response = new
+                {
+                    Token = token
+                };
+
+                return Ok(response);
             }
-            var user = authenticationResult.Value;
-
-            var claims = _authService.CreateClaims(user);
-            var JwtToken = _authService.CreateJwt(claims, _configuration.GetValue<string>("Auth:SecretKey"));
-
-            return Ok(new { Token = JwtToken });
+            catch (UserNotFoundException)
+            {
+                var response = new
+                {
+                    message = "User not found"
+                };
+                return Unauthorized(response);
+            }
+            catch (WrongPasswordException)
+            {
+                var response = new
+                {
+                    message = "Wrong password"
+                };
+                return Unauthorized(response);
+            }
+            catch (Exception exception)
+            {
+                var response = new
+                {
+                    message = exception.Message
+                };
+                return StatusCode(StatusCodes.Status500InternalServerError, response);
+            }
         }
     }
 }

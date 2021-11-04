@@ -12,10 +12,11 @@ using System.Linq;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+using AppAPI.Services.Auth.Exceptions;
 
 namespace AppAPI.Services.Auth
 {
-    public class AuthService : ServiceBase, IAuthService
+    public class AuthService : IAuthService
     {
         private readonly IUserRepository _userRepository;
         private readonly IRoleRepository _roleRepository;
@@ -36,28 +37,64 @@ namespace AppAPI.Services.Auth
             _cryptoServiceProvider = cryptoServiceProvider;
         }
 
-        public IServiceActionResult<User> Authenticate(LoginModel login)
+        public User Authenticate(LoginModel loginModel)
         {
-            User user = _userRepository.Get(login.Email);
+            User user = _userRepository.Get(loginModel.Email);
 
             if (user is null)
             {
-                return Error<User>("User not found", null);
+                throw new UserNotFoundException();
             }
 
-            string hashedPassword = GetHashedPassword(login.Password, user.Salt);
+            string hashedPassword = GetHashedPassword(loginModel.Password, user.Salt);
 
             if (!hashedPassword.Equals(user.HashedPassword))
             {
-                return Error<User>("Wrong password", null);
+                throw new WrongPasswordException();
             }
 
-            return Ok(user);
+            return user;
         }
 
-        public List<Claim> CreateClaims(User user)
+        public User Register(RegistrationModel registrationModel)
         {
-            var claims = new List<Claim>
+            if (UserExist(registrationModel))
+            {
+                throw new UserExistException();
+            }
+
+            var userRole = _roleRepository.Get("Admin");
+
+            var salt = GetSalt(512 / 8);
+
+            var hashedPass = GetHashedPassword(registrationModel.Password, salt);
+
+            var user = new User
+            {
+                FirstName = registrationModel.FirstName,
+                LastName = registrationModel.LastName,
+                Email = registrationModel.Email,
+                Salt = salt,
+                HashedPassword = hashedPass,
+                Roles = new List<Role> { userRole }
+            };
+
+            _userRepository.Add(user);
+            _context.SaveChanges();
+
+            return user;
+        }
+
+        public string GetJwtToken(User user, string signingKey)
+        {
+            var claims = CreateClaims(user);
+            var token = CreateJwt(claims, signingKey);
+            return token;
+        }
+
+        private List<Claim> CreateClaims(User user)
+        {
+            var defaultClaims = new List<Claim>
             {
                 new (ClaimTypes.NameIdentifier, user.Id.ToString(), ClaimValueTypes.Integer),
                 new (ClaimTypes.Email, user.Email),
@@ -65,15 +102,15 @@ namespace AppAPI.Services.Auth
                 new (ClaimTypes.Surname, user.LastName)
             };
 
-            var permissions = user.Roles
+            var permissionClaims = user.Roles
                 .SelectMany(r => r.Permissions)
                 .Distinct()
                 .Select(p => new Claim("permission", p.Title));
 
-            return claims.Concat(permissions).ToList();
+            return defaultClaims.Concat(permissionClaims).ToList();
         }
 
-        public string CreateJwt(IEnumerable<Claim> claims, string signingKey)
+        private string CreateJwt(IEnumerable<Claim> claims, string signingKey)
         {
             var now = DateTime.Now;
 
@@ -91,43 +128,16 @@ namespace AppAPI.Services.Auth
             return encodedJwt;
         }
 
-        public ClaimsPrincipal CreatePrincipal(User user)
-        {
-            var claims = CreateClaims(user);
-
-            var identity = new ClaimsIdentity(claims);
-
-            return new ClaimsPrincipal(identity);
-        }
-
-        public bool UserExists(RegistrationModel registration)
+        private bool UserExist(RegistrationModel registration)
         {
             return _userRepository.Get(registration.Email) is not null;
         }
 
-        public IServiceActionResult<User> Register(RegistrationModel registration, string asRole)
+        private byte[] GetSalt(int size)
         {
-            var userRole = _roleRepository.Get(asRole);
-
-            var salt = new byte[512 / 8];
+            var salt = new byte[size];
             _cryptoServiceProvider.GetNonZeroBytes(salt);
-
-            var hashedPass = GetHashedPassword(registration.Password, salt);
-
-            var user = new User
-            {
-                FirstName = registration.FirstName,
-                LastName = registration.LastName,
-                Email = registration.Email,
-                Salt = salt,
-                HashedPassword = hashedPass,
-                Roles = new List<Role> { userRole }
-            };
-
-            _userRepository.Add(user);
-            _context.SaveChanges();
-
-            return Ok(user);
+            return salt;
         }
 
         private static string GetHashedPassword(string password, byte[] salt)

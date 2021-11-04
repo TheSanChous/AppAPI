@@ -1,6 +1,4 @@
-﻿using Models;
-
-namespace Data.Models.Species
+﻿namespace Data.Models.Species
 {
     public class GroupMemberType : BaseEntity
     {

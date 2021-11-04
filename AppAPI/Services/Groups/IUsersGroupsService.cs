@@ -7,10 +7,10 @@ namespace AppAPI.Services.Groups
 {
     public interface IUsersGroupsService
     {
-        public IServiceActionResult<IEnumerable<Group>> GetUserGroups(int userId);
+        public IEnumerable<Group> GetUserGroups(User user);
 
-        public IServiceActionResult<Group> CreateGroup(GroupCreateModel group, User creator);
+        public Group CreateGroup(GroupCreateModel group, User creator);
 
-        public IServiceActionResult JoinUserToGroup(User user, string groupId, GroupMemberTypes type = GroupMemberTypes.Student);
+        public void JoinUserToGroup(User user, string groupIdentifier, GroupMemberTypes type = GroupMemberTypes.Student);
     }
 }

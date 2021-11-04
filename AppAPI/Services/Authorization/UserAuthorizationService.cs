@@ -1,10 +1,11 @@
 ﻿using Data.Models.Auth;
 using Data.Repositories;
 using System.Security.Claims;
+using AppAPI.Services.Authorization.Exceptions;
 
 namespace AppAPI.Services.Authorization
 {
-    public class UserAuthorizationService : ServiceBase, IUserAuthorizationService
+    public class UserAuthorizationService : IUserAuthorizationService
     {
         private readonly IUserRepository _userRepository;
 
@@ -13,21 +14,30 @@ namespace AppAPI.Services.Authorization
             _userRepository = userRepository;
         }
 
-        public IServiceActionResult<User> GetUser(ClaimsPrincipal userClaims)
+        public User GetUser(ClaimsPrincipal userClaims)
         {
-            var user = _userRepository.Get(GetUserId(userClaims).Value);
+            var user = _userRepository.Get(GetUserId(userClaims));
+            
             if(user is null)
             {
-                return Error<User>("User not found", null);
+                throw new InvalidClaimsException();
             }
 
-            return Ok(user);
+            return user;
         }
 
-        public IServiceActionResult<int> GetUserId(ClaimsPrincipal userClaims)
+        public int GetUserId(ClaimsPrincipal userClaims)
         {
-            var user = int.Parse(userClaims.FindFirstValue(ClaimTypes.NameIdentifier));
-            return Ok(user);
+            string nameIdentifier = userClaims.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if(string.IsNullOrEmpty(nameIdentifier))
+            {
+                throw new InvalidClaimsException();
+            }
+
+            int userId = int.Parse(nameIdentifier);
+
+            return userId;
         }
     }
 }

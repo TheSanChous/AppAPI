@@ -2,11 +2,11 @@
 
 namespace AppAPI.Services.IdentifierGenerator
 {
-    public class IdentifierGeneratorService : ServiceBase, IIdentifierGeneratorService
+    public class IdentifierGeneratorService : IIdentifierGeneratorService
     {
-        public IServiceActionResult<string> GenerateIdentifier()
+        public string GenerateIdentifier()
         {
-            return Ok(Guid.NewGuid().ToString("N"));
+            return Guid.NewGuid().ToString("N");
         }
     }
 }

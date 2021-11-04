@@ -30,10 +30,10 @@ namespace Data.Repositories
                 .Remove(Get(id));
         }
 
-        public Group Get(string id)
+        public Group Get(string identifier)
         {
             return _databaseContext.Groups
-                .FirstOrDefault(g => g.Identifier == id);
+                .FirstOrDefault(g => g.Identifier == identifier);
         }
 
         public IEnumerable<Group> Get()

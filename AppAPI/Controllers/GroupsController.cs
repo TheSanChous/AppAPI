@@ -1,6 +1,8 @@
 ﻿using AppAPI.DTO;
 using AppAPI.Services.Authorization;
 using AppAPI.Services.Groups;
+using Data.Models.Auth;
+using Data.Models.Species;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -26,64 +28,33 @@ namespace AppAPI.Controllers
         [Authorize]
         public IActionResult GetGroups()
         {
-            var getUserIdResult = _userAuthorizationService.GetUserId(User);
-            if (!getUserIdResult.IsOk)
-            {
-                return BadRequest(getUserIdResult.Error);
-            }
+            User user = _userAuthorizationService.GetUser(User);
+            
+            var groups = _groupService.GetUserGroups(user);
 
-            var userId = getUserIdResult.Value;
-
-            var result = _groupService.GetUserGroups(userId);
-
-            if (result.IsOk)
-            {
-                return Ok(result.Value);
-            }
-
-            return BadRequest(result.Error);
+            return Ok(groups);
         }
 
         [HttpPost("create")]
         [Authorize]
-        public IActionResult CreateGroup([FromBody] GroupCreateModel group)
+        public IActionResult CreateGroup([FromBody] GroupCreateModel groupCreateModel)
         {
-            var getUserResult = _userAuthorizationService.GetUser(User);
-            if (!getUserResult.IsOk)
-            {
-                return BadRequest(getUserResult.Error);
-            }
-            var user = getUserResult.Value;
+            User user = _userAuthorizationService.GetUser(User);
+           
+            _groupService.CreateGroup(groupCreateModel, user);
 
-            var result = _groupService.CreateGroup(group, user);
-            
-            if (result.IsOk)
-            {
-                return Ok();
-            }
-
-            return BadRequest(result.Error);
+            return Ok();
         }
 
         [HttpPost("join")]
         [Authorize]
         public IActionResult JoinUserToGroup([FromBody] string groupId)
         {
-            var getUserResult = _userAuthorizationService.GetUser(User);
-            if (!getUserResult.IsOk)
-            {
-                return BadRequest(getUserResult.Error);
-            }
-            var user = getUserResult.Value;
+            User user = _userAuthorizationService.GetUser(User);
+            
+            _groupService.JoinUserToGroup(user, groupId);
 
-            var result = _groupService.JoinUserToGroup(user, groupId);
-
-            if (result.IsOk)
-            {
-                return Ok();
-            }
-
-            return BadRequest(result.Error);
+            return Ok();
         }
     }
 }
